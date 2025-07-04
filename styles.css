@@ -1,0 +1,205 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto";
+}
+
+.checked{
+    text-decoration: line-through;
+    color: gray;
+}
+
+header{
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+}
+
+main{ 
+    padding: 10px;
+    min-height: 69vh;
+}
+
+.tasks-container{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.tasks-container h2{
+    margin: 0;
+    padding: 10px 0;
+    font-size: 1.5em;
+    color: #333;
+    text-align: center;
+}
+
+ul{
+    padding: 0;
+}
+
+li{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+.input-container{
+    display: grid;
+    grid-template-areas:
+                        "task-input task-input task-input"
+                        "priority-select due-date-input add-task-button";
+    gap: 10px;
+    margin: 10px;
+    flex-wrap: wrap;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#task-input{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    grid-area: task-input;
+}
+
+#add-task-button{
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    height: 40px;
+    grid-area: add-task-button;
+}
+
+#add-task-button:hover{
+    background-color: #0056b3;
+}
+
+#priority-select{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    grid-area: priority-select;
+}
+
+#due-date-input{
+    grid-area: due-date-input;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.task-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.task-item button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 10px;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
+.task-item button:hover{
+    background-color: #eee;
+}
+
+.task-item input[type="text"]{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.task-item input[type="checkbox"]{
+    width: 15px;
+    height: 15px;
+}
+
+a{
+    text-decoration: none;
+    color: #007bff;
+}
+
+a:hover{
+    color: #0056b3;
+}
+
+.task-priority{
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.task-item span{
+    width: 30%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.task-item .task-due-date{
+    color: #444;
+    margin-left: 10px;
+}
+
+#task-list li:last-child{
+    border: none;
+}
+
+@media(max-width: 600px) {
+    main{
+        min-height: 78.4vh;
+    }
+
+    .input-container{
+        grid-template-areas:
+                            "task-input task-input"
+                            "priority-select due-date-input"
+                            "add-task-button add-task-button"
+    }
+
+    .task-due-date{
+        text-wrap: nowrap;
+    }
+
+    .task-item{
+        font-size: 12px;
+        width: 95%;
+        padding: 5px;
+    }
+
+    .task-item button{
+        height: 30px;
+        width: 30px;
+    }
+}

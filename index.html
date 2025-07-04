@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amr's To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <header aria-label = "Header">
+        <h1>TODO</h1>
+    </header>
+    <main aria-label = "Main Content">
+        <form class = "input-container">
+            <input type="text" id = "task-input" placeholder = "Enter a new task here..." aria-label = "Task Input">
+            <select id="priority-select" aria-label="Priority Select">
+                <option value="High" disabled selected>Select Priority</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+            <input type="date" id="due-date-input" aria-label = "Due Date Input">
+            <button id = "add-task-button"><i class="fas fa-plus"></i> Add Task</button>
+        </form>
+        <div class = "tasks-container" aria-label = "Tasks Container">
+            <h2>Tasks</h2>
+            <ul id="task-list" aria-label = "Task List">
+                <!-- Tasks will be dynamically added here -->
+            </ul>
+        </div>
+    </main>
+    <footer aria-label = "Footer">
+        <p aria-label = "Footer Text">Made with ❤️ by <a href="https://amrs.netlify.app" target="_blank">Amr</a></p>
+    </footer>
+    <script src = "main.js"></script>
+</body>
+</html>
