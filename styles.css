@@ -1,3 +1,4 @@
+/* Styles for the To-Do List Application */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 
 body{
@@ -144,6 +145,7 @@ footer{
 .task-item input[type="checkbox"]{
     width: 15px;
     height: 15px;
+    cursor: pointer;
 }
 
 a{
@@ -153,6 +155,7 @@ a{
 
 a:hover{
     color: #0056b3;
+    text-decoration: underline;
 }
 
 .task-priority{
@@ -160,11 +163,18 @@ a:hover{
     font-size: 1.2em;
 }
 
-.task-item span{
+.task-item .task-text{
     width: 30%;
+    height: auto;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.task-text.expanded{
+    white-space: normal;
+    text-wrap: wrap;
 }
 
 .task-item .task-due-date{
@@ -174,6 +184,16 @@ a:hover{
 
 #task-list li:last-child{
     border: none;
+}
+
+.task-count{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #ddd;
+    border-radius: 5px;
+    height: 20px;
 }
 
 @media(max-width: 600px) {
@@ -202,4 +222,27 @@ a:hover{
         height: 30px;
         width: 30px;
     }
+
+    .task-item input[type="text"]{
+        width: 100%;
+        font-size: 12px;
+        margin: 10px;
+    }
+}
+
+@media(max-width: 340px) {
+    header h1{
+        font-size: 1.6em;
+    }
+    .input-container{
+        grid-template-areas: "task-input"
+                            "priority-select"
+                            "due-date-input"
+                            "add-task-button";
+    }
+    .task-count{
+        font-size: 14px;
+    }
+
+
 }
