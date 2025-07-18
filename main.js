@@ -1,4 +1,3 @@
-// TODO: Fix the local storage issue where tasks are not being saved correctly (Logical Error)
 // Main JavaScript file for the To-Do List application
 const addTaskButton = document.querySelector("#add-task-button");
 const taskInput = document.querySelector("#task-input");
@@ -10,8 +9,16 @@ const completedTasksText = document.querySelector("#completed-tasks");
 let completedCount = 0;
 let totalCount = 0;
 
-let retTasks= JSON.parse(window.localStorage.getItem(`tasks`));
-let tasks = [];
+let tasks = JSON.parse(window.localStorage.getItem(`tasks`)) || [];
+
+function updateLocalStorage(){
+    window.localStorage.setItem(`tasks`, JSON.stringify(tasks));
+}
+
+function updateCounts() {
+    totalTasksText.textContent = totalCount;
+    completedTasksText.textContent = completedCount;
+}
 
 function priority(selectedPriority){
     const priorityParagraph = document.createElement("p");
@@ -61,28 +68,28 @@ function addTask(taskText,dueDate, taskPriority, checked = false){
         priority: taskPriority,
         completed: checked
     };
-    tasks.push(taskData);
-    window.localStorage.setItem(`tasks`, JSON.stringify(tasks));
 
-
+    
     // Reset and clear the input fields
     taskInput.value = "";
     dueDateInput.value = "";
     prioritySelect.selectedIndex = 0; // Reset to default option
-
+    
     // Count The Total Tasks
     totalCount++;
-    totalTasksText.textContent = totalCount;
-
+    updateCounts();
+    
     if (checked){
         completedCount++;
-        completedTasksText.textContent = completedCount;
+        updateCounts();
     }
+
+    return taskData;
 }
 
 // Load tasks from local storage on page load
-if(retTasks && retTasks.length > 0) {
-    retTasks.forEach(task => {
+if(tasks && tasks.length > 0) {
+    tasks.forEach(task => {
         addTask(task.text, task.dueDate, task.priority, task.completed);
     });
 }
@@ -90,7 +97,7 @@ if(retTasks && retTasks.length > 0) {
 // Check The Task If Ended
 taskList.addEventListener("click", function (event) {
     const clicked = event.target.closest(`input[type='checkbox'], button, span`);
-    if (!clicked) return; // If the clicked element is not a checkbox or button, exit the function
+    if (!clicked) return; // If the clicked element is not a checkbox or button or a span, exit the function
     if (clicked.matches(".task-checkbox")){
         const checkedTask = clicked.parentElement.querySelector(".task-text");
         checkedTask.classList.toggle("checked");
@@ -98,53 +105,43 @@ taskList.addEventListener("click", function (event) {
             completedCount++;
             completedTasksText.textContent = completedCount
             // Update the task in local storage
-            retTasks.forEach((task) =>{
+            tasks.forEach((task) =>{
                 if (task.text === checkedTask.textContent) {
                     task.completed = true;
-                    window.localStorage.clear();
-                    window.localStorage.setItem(`tasks`, JSON.stringify(retTasks));
-                } else if (tasks.length > 0){ // If exists in tasks and doesn't exist in retTasks, update the completed status
-                    tasks.forEach((task) => {
-                        if (task.text === checkedTask.textContent) {
-                            task.completed = true;
-                            window.localStorage.clear();
-                            window.localStorage.setItem(`tasks`, JSON.stringify(tasks));
-                        }
-                    });
+                    updateLocalStorage();
+                    return;
                 }
             });
         } 
         else {
-            retTasks.forEach((task) =>{
+            tasks.forEach((task) =>{
                 if (task.text === checkedTask.textContent) {
                     task.completed = false;
-                    window.localStorage.clear();
-                    window.localStorage.setItem(`tasks`, JSON.stringify(retTasks));
+                    updateLocalStorage();
                     return;
                 }
             });
             completedCount--;
-            completedTasksText.textContent = completedCount;
+            updateCounts();
         }
     }
     else if (clicked.matches(".delete-button")){
         const taskItem = clicked.parentElement;
         taskList.removeChild(taskItem);
         // Remove the task from Local Storage
-        for (let i = 0; i < retTasks.length; i++) {
-            if(retTasks[i].text === taskItem.querySelector(".task-text").textContent) {
-                retTasks.splice(i, 1);
-                window.localStorage.clear();
-                window.localStorage.setItem(`tasks`, JSON.stringify(retTasks));
+        for (let i = 0; i < tasks.length; i++) {
+            if(tasks[i].text === taskItem.querySelector(".task-text").textContent) {
+                tasks.splice(i, 1);
+                updateLocalStorage();
             }
         } 
         // Update the total tasks count
         totalCount--;
-        totalTasksText.textContent = totalCount;
+        updateCounts();
         // Update the completed tasks count if the task was completed
         if (taskItem.querySelector(".task-checkbox").checked) {
             completedCount--;
-            completedTasksText.textContent = completedCount;
+            updateCounts();
         }
     }
     else if (clicked.matches(".edit-button")){
@@ -177,11 +174,10 @@ taskList.addEventListener("click", function (event) {
         newTaskInput.value = ""; // Clear the input field
         taskText.style.display = "inline-block";
         // Update the task in local storage
-        retTasks.forEach((task) => {
+        tasks.forEach((task) => {
             if (task.text === taskText.textContent) {
                 task.text = editedTaskText;
-                window.localStorage.clear();
-                window.localStorage.setItem(`tasks`, JSON.stringify(retTasks));
+                updateLocalStorage();
             }
         });
         taskText.textContent = editedTaskText;
@@ -199,13 +195,17 @@ taskList.addEventListener("click", function (event) {
 addTaskButton.addEventListener("click", function(event){
     event.preventDefault(); // Prevent form submission
     if (prioritySelect.selectedIndex === 0) return; // If no priority is selected, exit the function
-    addTask(taskInput.value, dueDateInput.value, prioritySelect.value);
+    const taskData = addTask(taskInput.value, dueDateInput.value, prioritySelect.value);
+    tasks.push(taskData);
+    updateLocalStorage();
 });
 
 // Adding Task On Enter Key Press
 taskInput.addEventListener("keyup", function(event){
     if (event.keyCode == 13){
         if (prioritySelect.selectedIndex === 0) return; // If no priority is selected, exit the function
-        addTask(taskInput.value, dueDateInput.value, prioritySelect.value);
+        const taskData = addTask(taskInput.value, dueDateInput.value, prioritySelect.value);
+        tasks.push(taskData);
+        updateLocalStorage();
     }
 });

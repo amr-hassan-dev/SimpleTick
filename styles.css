@@ -10,7 +10,7 @@ body{
 
 .checked{
     text-decoration: line-through;
-    color: gray;
+    color: #777;
 }
 
 header{
