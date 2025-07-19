@@ -19,6 +19,11 @@
     </header>
     <main aria-label = "Main Content">
         <form class = "input-container">
+            <div class = "search-bar" aria-label = "search-bar">
+                <span id = "search-magnifier"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" id = "search-input" placeholder = "Search">
+                <button id = "clear-button"><i class="fa-solid fa-xmark"></i></button>
+            </div>
             <input type="text" id = "task-input" placeholder = "Enter a new task here..." aria-label = "Task Input">
             <select id="priority-select" aria-label="Priority Select">
                 <option value="" disabled selected>Select Priority</option>

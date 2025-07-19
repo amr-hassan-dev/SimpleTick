@@ -6,6 +6,8 @@ const dueDateInput = document.querySelector("#due-date-input");
 const prioritySelect = document.querySelector("#priority-select");
 const totalTasksText = document.querySelector("#total-tasks");
 const completedTasksText = document.querySelector("#completed-tasks");
+const searchInput = document.querySelector("#search-input");
+const clearSearchBtn = document.querySelector("#clear-button");
 let completedCount = 0;
 let totalCount = 0;
 
@@ -85,6 +87,14 @@ function addTask(taskText,dueDate, taskPriority, checked = false){
     }
 
     return taskData;
+}
+
+function eventListenerForTask(){
+    if (prioritySelect.selectedIndex === 0) return;
+    if (taskInput.value === "") return;
+    const taskData = addTask(taskInput.value, dueDateInput.value, prioritySelect.value);
+    tasks.push(taskData);
+    updateLocalStorage();
 }
 
 // Load tasks from local storage on page load
@@ -191,21 +201,41 @@ taskList.addEventListener("click", function (event) {
     }
 });
 
+const taskTexts = document.querySelectorAll(".task-text");
+searchInput.addEventListener("input", function(){
+    clearSearchBtn.classList.add('visible');
+    const searchValue = searchInput.value.trim().toLowerCase();
+    if (searchValue === ""){
+        clearSearchBtn.classList.remove('visible');
+    }
+    taskTexts.forEach(taskText => {
+        if (taskText.textContent.toLowerCase().includes(searchValue)){
+            taskText.parentElement.style.display = "flex";
+        } else {
+            taskText.parentElement.style.display = "none";
+        }
+    });
+});
+
+clearSearchBtn.addEventListener("click", function(event){
+    event.preventDefault();
+    searchInput.value = "";
+    clearSearchBtn.classList.remove("visible");
+    taskTexts.forEach(taskText => {
+        taskText.parentElement.style.display = "flex";
+    })
+});
+
 // Adding Task Event Listeners
 addTaskButton.addEventListener("click", function(event){
     event.preventDefault(); // Prevent form submission
-    if (prioritySelect.selectedIndex === 0) return; // If no priority is selected, exit the function
-    const taskData = addTask(taskInput.value, dueDateInput.value, prioritySelect.value);
-    tasks.push(taskData);
-    updateLocalStorage();
+    eventListenerForTask();
+    taskInput.focus(); // Keep focus on the input field after adding a task
 });
 
 // Adding Task On Enter Key Press
 taskInput.addEventListener("keyup", function(event){
     if (event.keyCode == 13){
-        if (prioritySelect.selectedIndex === 0) return; // If no priority is selected, exit the function
-        const taskData = addTask(taskInput.value, dueDateInput.value, prioritySelect.value);
-        tasks.push(taskData);
-        updateLocalStorage();
+        eventListenerForTask();
     }
 });

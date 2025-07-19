@@ -22,6 +22,10 @@ header{
 
 main{ 
     padding: 10px;
+    min-height: 82.5vh;
+    display: flex;
+    flex-direction: column;
+
 }
 
 .tasks-container{
@@ -31,6 +35,7 @@ main{
     border-radius: 5px;
     margin: 10px;
     padding: 10px;
+    flex: 1;
 }
 
 .tasks-container h2{
@@ -57,15 +62,12 @@ footer{
     align-items: center;
     padding: 10px;
     background-color: #f0f0f0;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
 }
 
 .input-container{
     display: grid;
     grid-template-areas:
+                        "search-bar search-bar search-bar"
                         "task-input task-input task-input"
                         "priority-select due-date-input add-task-button";
     gap: 10px;
@@ -74,6 +76,42 @@ footer{
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
+}
+
+.search-bar{
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    grid-area: search-bar;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+}
+
+#search-magnifier{
+    color: gray
+}
+
+#search-input{
+    width: 100%;
+    border: none;
+    border-radius: 20px;
+    font-size: 1em;
+}
+
+#search-input:focus{
+    outline: none;
+}
+
+.search-bar #clear-button{
+    display: none;
+    background-color: #fff;
+    border: none;
+    font-size: 1em;
+}
+
+#clear-button.visible{ 
+    display: block;
 }
 
 #task-input{
@@ -103,6 +141,10 @@ footer{
     border: 1px solid #ccc;
     border-radius: 5px;
     grid-area: priority-select;
+}
+
+.invalid-input{
+    border: 1px solid red;
 }
 
 #due-date-input{
@@ -201,7 +243,7 @@ a:hover{
 @media(max-width: 600px) {
     header{
         height: 50px;
-        padding: 10px 10px;
+        padding: 10px;
     }
 
     header h1{
@@ -210,6 +252,7 @@ a:hover{
 
     .input-container{
         grid-template-areas:
+                            "search-bar search-bar"
                             "task-input task-input"
                             "priority-select due-date-input"
                             "add-task-button add-task-button"
@@ -241,15 +284,17 @@ a:hover{
     header h1{
         font-size: 1.6em;
     }
+
     .input-container{
-        grid-template-areas: "task-input"
+        grid-template-areas:
+                            "search-bar"
+                            "task-input"
                             "priority-select"
                             "due-date-input"
                             "add-task-button";
     }
+
     .task-count{
         font-size: 14px;
     }
-
-
 }
