@@ -18,6 +18,7 @@ header{
     align-items: center;
     padding: 10px 20px;
     background-color: #f0f0f0;
+    justify-content: space-between;
 }
 
 main{ 
@@ -143,7 +144,7 @@ footer{
     grid-area: priority-select;
 }
 
-.invalid-input{
+#task-input.error, #priority-select.error{
     border: 1px solid red;
 }
 

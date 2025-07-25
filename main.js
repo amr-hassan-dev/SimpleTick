@@ -25,7 +25,7 @@ function updateCounts() {
 function priority(selectedPriority){
     const priorityParagraph = document.createElement("p");
     priorityParagraph.classList.add("task-priority");
-    priorityParagraph.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>`;
+    priorityParagraph.innerHTML = `<i class="fa-solid fa-flag"></i>`;
 
     if (!selectedPriority) return;
 
@@ -90,8 +90,20 @@ function addTask(taskText,dueDate, taskPriority, checked = false){
 }
 
 function eventListenerForTask(){
-    if (prioritySelect.selectedIndex === 0) return;
-    if (taskInput.value === "") return;
+    if (prioritySelect.selectedIndex === 0){
+        prioritySelect.classList.add("error");
+        prioritySelect.addEventListener("change", function(){
+            prioritySelect.classList.remove("error");
+        });
+        return;
+    } else if (taskInput.value === ""){
+        taskInput.classList.add("error");
+        taskInput.addEventListener("input", function(){
+            taskInput.classList.remove("error");
+        });
+        return;
+    }
+    taskInput.focus(); // Keep focus on the input field after adding a task
     const taskData = addTask(taskInput.value, dueDateInput.value, prioritySelect.value);
     tasks.push(taskData);
     updateLocalStorage();
@@ -230,7 +242,6 @@ clearSearchBtn.addEventListener("click", function(event){
 addTaskButton.addEventListener("click", function(event){
     event.preventDefault(); // Prevent form submission
     eventListenerForTask();
-    taskInput.focus(); // Keep focus on the input field after adding a task
 });
 
 // Adding Task On Enter Key Press
