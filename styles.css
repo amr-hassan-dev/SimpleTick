@@ -21,6 +21,10 @@ header{
     justify-content: space-between;
 }
 
+header h1{
+    color: #0056b3;
+}
+
 main{ 
     padding: 10px;
     min-height: 82.5vh;

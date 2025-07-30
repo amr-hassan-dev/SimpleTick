@@ -92,8 +92,12 @@ function addTask(taskText, dueDate, taskPriority, checked = false){
     return taskData;
 }
 
-function addFromTasks(){
-    tasks.forEach(task => addTask(task.text, task.dueDate, task.priority, task.completed));
+function renderTasks(taskArray){
+    taskList.innerHTML = "";
+    totalCount = 0;
+    completedCount = 0;
+    updateCounts();
+    taskArray.forEach(task => addTask(task.text, task.dueDate, task.priority, task.completed));
 }
 
 function eventListenerForTask(){
@@ -220,8 +224,8 @@ taskList.addEventListener("click", function (event) {
     }
 });
 
-const taskTexts = document.querySelectorAll(".task-text");
 searchInput.addEventListener("input", function(){
+    const taskTexts = document.querySelectorAll(".task-text");
     clearSearchBtn.classList.add('visible');
     const searchValue = searchInput.value.trim().toLowerCase();
     if (searchValue === ""){
@@ -253,7 +257,7 @@ addTaskButton.addEventListener("click", function(event){
 
 // Adding Task On Enter Key Press
 taskInput.addEventListener("keyup", function(event){
-    if (event.keyCode == 13){
+    if (event.keyCode === "Enter"){
         eventListenerForTask();
     }
 });
@@ -284,24 +288,20 @@ filterSelect.addEventListener("input", function() {
 
 
 sortSelect.addEventListener("input", function(){
-    const taskItems = taskList.querySelectorAll(".task-item");
-    taskItems.forEach((taskItem) => taskList.removeChild(taskItem));
-    totalCount = 0;
-    completedCount = 0;
     updateCounts();
     if (sortSelect.value === "completion"){
         tasks.sort((a,b) => b.completed - a.completed);
-        addFromTasks();
+        renderTasks(tasks);
     } else if (sortSelect.value === "alphabetical"){
         tasks.sort((a,b) => a.text.localeCompare(b.text));
-        addFromTasks();
+        renderTasks(tasks);
     } else if (sortSelect.value === "due-date"){
         tasks.sort((a,b) => a.dueDate - b.dueDate);
-        addFromTasks();
+        renderTasks(tasks);
     } else if (sortSelect.value === "uncompleted") {
         tasks.sort((a,b) => a.completed - b.completed);
-        addFromTasks();
+        renderTasks(tasks);
     } else{
-        addFromTasks();
+        renderTasks(tasks);
     }
 });
