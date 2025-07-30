@@ -24,6 +24,30 @@
                 <input type="text" id = "search-input" placeholder = "Search">
                 <button id = "clear-button"><i class="fa-solid fa-xmark"></i></button>
             </div>
+            <div class = "filter-sort-container">
+                <div class="filter-container">
+                    <i class ="fa-solid fa-filter"></i>
+                    <select id="filter-select" aria-label = "Filter Select">
+                        <option value="" disabled selected>Filter by</option>
+                        <option value="all">All</option>
+                        <option value="checked">Checked</option>
+                        <option value="unchecked">Unchecked</option>
+                        <option value="low-priority">Low Priority</option>
+                        <option value="medium-priority">Medium Priority</option>
+                        <option value="high-priority">High Priority</option>
+                    </select>
+                </div>
+                <div class="sort-container">
+                    <i class="fa-solid fa-sort"></i>
+                    <select id="sort-select" aria-label = "Sort Select">
+                        <option value="" disabled selected>Sort by</option>
+                        <option value="alphabetical">Alphabetical</option>
+                        <option value="completion">Completion</option>
+                        <option value="uncompleted">Uncompleted</option>
+                        <option value="random">Random</option>
+                    </select>
+                </div>
+            </div>
             <input type="text" id = "task-input" placeholder = "Enter a new task here..." aria-label = "Task Input">
             <select id="priority-select" aria-label="Priority Select">
                 <option value="" disabled selected>Select Priority</option>

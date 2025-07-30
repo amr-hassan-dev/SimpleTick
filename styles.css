@@ -69,6 +69,7 @@ footer{
     display: grid;
     grid-template-areas:
                         "search-bar search-bar search-bar"
+                        "filter-sort-container filter-sort-container filter-sort-container"
                         "task-input task-input task-input"
                         "priority-select due-date-input add-task-button";
     gap: 10px;
@@ -77,6 +78,40 @@ footer{
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
+}
+
+.filter-sort-container{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    grid-area: filter-sort-container;
+}
+
+.filter-container, .sort-container{
+    width: 50%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.filter-container i, .sort-container i{
+    font-size: 1.1em;
+}
+
+#sort-select, #filter-select{
+    border: none;
+    width: 95%;
+    padding: 5px;
+    font-size: 0.8em;
+}
+
+#sort-select:focus, #filter-select:focus{
+    outline: none;
 }
 
 .search-bar{
@@ -109,6 +144,7 @@ footer{
     background-color: #fff;
     border: none;
     font-size: 1em;
+    cursor: pointer;
 }
 
 #clear-button.visible{ 
@@ -254,9 +290,15 @@ a:hover{
     .input-container{
         grid-template-areas:
                             "search-bar search-bar"
+                            "filter-sort-container filter-sort-container"
                             "task-input task-input"
                             "priority-select due-date-input"
                             "add-task-button add-task-button"
+    }
+
+    .sort-container, .filter-container{
+        width: 100%;
+        padding: 5px;
     }
 
     .task-due-date{
@@ -289,10 +331,16 @@ a:hover{
     .input-container{
         grid-template-areas:
                             "search-bar"
+                            "filter-sort-container"
                             "task-input"
                             "priority-select"
                             "due-date-input"
                             "add-task-button";
+    }
+
+    .filter-sort-container{
+        flex-direction: column;
+        padding: 5px;
     }
 
     .task-count{

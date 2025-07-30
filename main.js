@@ -8,6 +8,8 @@ const totalTasksText = document.querySelector("#total-tasks");
 const completedTasksText = document.querySelector("#completed-tasks");
 const searchInput = document.querySelector("#search-input");
 const clearSearchBtn = document.querySelector("#clear-button");
+const filterSelect = document.querySelector("#filter-select");
+const sortSelect = document.querySelector("#sort-select");
 let completedCount = 0;
 let totalCount = 0;
 
@@ -22,47 +24,48 @@ function updateCounts() {
     completedTasksText.textContent = completedCount;
 }
 
+
 function priority(selectedPriority){
     const priorityParagraph = document.createElement("p");
     priorityParagraph.classList.add("task-priority");
     priorityParagraph.innerHTML = `<i class="fa-solid fa-flag"></i>`;
-
+    
     if (!selectedPriority) return;
-
+    
     else if (selectedPriority === "High") {
         priorityParagraph.style.color = "red";
     }
-
+    
     else if (selectedPriority === "Medium") {
         priorityParagraph.style.color = "orange";
     }
-
+    
     else if (selectedPriority === "Low") {
         priorityParagraph.style.color = "green";
     }
-
+    
     return priorityParagraph;
 }
 
-function addTask(taskText,dueDate, taskPriority, checked = false){
+function addTask(taskText, dueDate, taskPriority, checked = false){
     taskText = taskText.trim();
     const priorityElement = priority(taskPriority);
     if (!taskText) return; // If the input is empty, exit the function
     if (!dueDate) dueDate = "No Due Date"; // If no due date is provided, set a default value
     if (!taskPriority) return; // If priority is not selected, exit the function
-
+    
     // Create a new task item
     const taskItem = document.createElement("li");
     taskItem.classList.add("task-item");
     taskItem.innerHTML = `
-                        <input type="checkbox" class="task-checkbox" ${checked ? "checked" : ""}>
-                        <span class = "task-text ${checked ? "checked" : ""}">${taskText}</span>
-                        ${priorityElement.outerHTML}
-                        <span class="task-due-date">${dueDate}</span>
-                        <button class="delete-button" title = "Delete"><i class="fa-solid fa-trash"></i></button>
-                        <button class="edit-button" title = "Edit"><i class="fa-solid fa-pen"></i></button>`;
+    <input type="checkbox" class="task-checkbox" ${checked ? "checked" : ""}>
+    <span class = "task-text ${checked ? "checked" : ""}">${taskText}</span>
+    ${priorityElement.outerHTML}
+    <span class="task-due-date">${dueDate}</span>
+    <button class="delete-button" title = "Delete"><i class="fa-solid fa-trash"></i></button>
+    <button class="edit-button" title = "Edit"><i class="fa-solid fa-pen"></i></button>`;
     taskList.appendChild(taskItem);
-
+    
     // Adding to the Local Storage
     const taskData = {
         text: taskText,
@@ -70,7 +73,7 @@ function addTask(taskText,dueDate, taskPriority, checked = false){
         priority: taskPriority,
         completed: checked
     };
-
+    
     
     // Reset and clear the input fields
     taskInput.value = "";
@@ -85,8 +88,12 @@ function addTask(taskText,dueDate, taskPriority, checked = false){
         completedCount++;
         updateCounts();
     }
-
+    
     return taskData;
+}
+
+function addFromTasks(){
+    tasks.forEach(task => addTask(task.text, task.dueDate, task.priority, task.completed));
 }
 
 function eventListenerForTask(){
@@ -248,5 +255,53 @@ addTaskButton.addEventListener("click", function(event){
 taskInput.addEventListener("keyup", function(event){
     if (event.keyCode == 13){
         eventListenerForTask();
+    }
+});
+
+// Adding Filtering To The Tasks
+filterSelect.addEventListener("input", function() {
+    const filterValue = filterSelect.value;
+    const taskItems = taskList.querySelectorAll(".task-item");
+    taskItems.forEach(taskItem =>{
+        const checkBoxValue = taskItem.querySelector(`input[type ="checkbox"]`).checked;
+        if (filterValue === "all"){
+            taskItem.style.display = "flex";
+        }else if (filterValue === "checked" && checkBoxValue){
+            taskItem.style.display = "flex";
+        }else if (filterValue === "unchecked" && checkBoxValue === false){
+            taskItem.style.display = "flex";
+        }else if (filterValue === "low-priority" && taskItem.querySelector("p").style.color === "green"){
+            taskItem.style.display = "flex";
+        }else if (filterValue === "medium-priority" && taskItem.querySelector("p").style.color === "orange"){
+            taskItem.style.display = "flex";
+        }else if (filterValue === "high-priority" && taskItem.querySelector("p").style.color === "red"){
+            taskItem.style.display = "flex";
+        }else{
+            taskItem.style.display = "none";
+        }
+    });
+});
+
+
+sortSelect.addEventListener("input", function(){
+    const taskItems = taskList.querySelectorAll(".task-item");
+    taskItems.forEach((taskItem) => taskList.removeChild(taskItem));
+    totalCount = 0;
+    completedCount = 0;
+    updateCounts();
+    if (sortSelect.value === "completion"){
+        tasks.sort((a,b) => b.completed - a.completed);
+        addFromTasks();
+    } else if (sortSelect.value === "alphabetical"){
+        tasks.sort((a,b) => a.text.localeCompare(b.text));
+        addFromTasks();
+    } else if (sortSelect.value === "due-date"){
+        tasks.sort((a,b) => a.dueDate - b.dueDate);
+        addFromTasks();
+    } else if (sortSelect.value === "uncompleted") {
+        tasks.sort((a,b) => a.completed - b.completed);
+        addFromTasks();
+    } else{
+        addFromTasks();
     }
 });
