@@ -61,6 +61,14 @@ li{
     margin: 0;
 }
 
+select{
+    background-color: #fff;
+}
+
+input[type="date"]{
+    background-color: #fff;
+}
+
 footer{
     display: flex;
     justify-content: center;
