@@ -241,6 +241,7 @@ searchInput.addEventListener("input", function(){
 });
 
 clearSearchBtn.addEventListener("click", function(event){
+    const taskTexts = document.querySelectorAll(".task-text");
     event.preventDefault();
     searchInput.value = "";
     clearSearchBtn.classList.remove("visible");
