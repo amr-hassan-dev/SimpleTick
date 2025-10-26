@@ -21,8 +21,16 @@ header{
     justify-content: space-between;
 }
 
-header h1{
+header .logo{
     color: #0056b3;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+header .slogan{
+    font-size: 1.1em;
+    color: #555;
+    font-style: italic;
 }
 
 main{ 
